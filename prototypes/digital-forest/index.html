@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Carbon Forest | Sustainable AI Visualization</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🌲</span>
+        <h1>Digital Carbon Forest</h1>
+      </div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <span class="stat-label">Ministry CO₂ Today</span>
+          <span class="stat-value" id="totalCO2">245.6g</span>
+        </div>
+        <div class="header-stat">
+          <span class="stat-label">Trees Grown</span>
+          <span class="stat-value" id="totalTrees">847</span>
+        </div>
+        <div class="header-stat success">
+          <span class="stat-label">Saved This Month</span>
+          <span class="stat-value" id="savedCO2">1,250g</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Forest Canvas -->
+      <div class="forest-container">
+        <canvas id="forestCanvas"></canvas>
+
+        <!-- Weather Overlay -->
+        <div class="weather-overlay" id="weather">
+          <div class="weather-icon">☀️</div>
+          <div class="weather-text">Healthy Forest</div>
+        </div>
+
+        <!-- Info Tooltip -->
+        <div class="tooltip" id="tooltip" style="display: none;">
+          <h4 id="tooltipTitle"></h4>
+          <p id="tooltipText"></p>
+        </div>
+      </div>
+
+      <!-- Side Panel -->
+      <aside class="side-panel">
+        <!-- Department Trees -->
+        <section class="panel-section">
+          <h2>🏢 Department Trees</h2>
+          <div class="department-list">
+            <div class="department-item healthy">
+              <span class="dept-icon">🌳</span>
+              <div class="dept-info">
+                <h4>IT Department</h4>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 85%"></div>
+                </div>
+                <p class="dept-stats">85% efficiency • 45.2g saved</p>
+              </div>
+            </div>
+
+            <div class="department-item healthy">
+              <span class="dept-icon">🌳</span>
+              <div class="dept-info">
+                <h4>Finance Team</h4>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 78%"></div>
+                </div>
+                <p class="dept-stats">78% efficiency • 38.9g saved</p>
+              </div>
+            </div>
+
+            <div class="department-item moderate">
+              <span class="dept-icon">🌿</span>
+              <div class="dept-info">
+                <h4>HR Department</h4>
+                <div class="progress-bar">
+                  <div class="progress-fill warning" style="width: 65%"></div>
+                </div>
+                <p class="dept-stats">65% efficiency • 22.1g saved</p>
+              </div>
+            </div>
+
+            <div class="department-item warning">
+              <span class="dept-icon">🍂</span>
+              <div class="dept-info">
+                <h4>Legal Team</h4>
+                <div class="progress-bar">
+                  <div class="progress-fill danger" style="width: 45%"></div>
+                </div>
+                <p class="dept-stats">45% efficiency • -15.3g impact</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Leaderboard -->
+        <section class="panel-section">
+          <h2>🏆 Weekly Challenge</h2>
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <span class="challenge-icon">🌱</span>
+              <div>
+                <h4>Grow 100 Trees</h4>
+                <p class="challenge-time">3 days remaining</p>
+              </div>
+            </div>
+            <div class="progress-bar large">
+              <div class="progress-fill" style="width: 67%"></div>
+            </div>
+            <p class="challenge-progress">67/100 trees</p>
+          </div>
+
+          <div class="leaderboard">
+            <div class="leader-item first">
+              <span class="rank">🥇</span>
+              <span class="leader-name">IT Department</span>
+              <span class="leader-score">156 trees</span>
+            </div>
+            <div class="leader-item second">
+              <span class="rank">🥈</span>
+              <span class="leader-name">Finance Team</span>
+              <span class="leader-score">142 trees</span>
+            </div>
+            <div class="leader-item third">
+              <span class="rank">🥉</span>
+              <span class="leader-name">Operations</span>
+              <span class="leader-score">128 trees</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="panel-section">
+          <h2>📊 Recent Activity</h2>
+          <div class="activity-feed">
+            <div class="activity-item success">
+              <span class="activity-icon">✨</span>
+              <div>
+                <p class="activity-text">IT planted 5 new trees</p>
+                <span class="activity-time">2 minutes ago</span>
+              </div>
+            </div>
+            <div class="activity-item success">
+              <span class="activity-icon">🎯</span>
+              <div>
+                <p class="activity-text">Finance completed quiz</p>
+                <span class="activity-time">15 minutes ago</span>
+              </div>
+            </div>
+            <div class="activity-item info">
+              <span class="activity-icon">💡</span>
+              <div>
+                <p class="activity-text">HR switched to DeepSeek AI</p>
+                <span class="activity-time">1 hour ago</span>
+              </div>
+            </div>
+            <div class="activity-item warning">
+              <span class="activity-icon">⚠️</span>
+              <div>
+                <p class="activity-text">Legal exceeded daily target</p>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="panel-section">
+          <h2>⚡ Quick Actions</h2>
+          <div class="quick-actions">
+            <button class="action-btn primary">
+              <span class="btn-icon">🌱</span>
+              <span>Plant a Tree</span>
+            </button>
+            <button class="action-btn secondary">
+              <span class="btn-icon">📚</span>
+              <span>Take Quiz</span>
+            </button>
+            <button class="action-btn outline">
+              <span class="btn-icon">📊</span>
+              <span>View Details</span>
+            </button>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Ministry of Finance • Sustainable AI Initiative • Real-time forest updates every 5 seconds</p>
+    </footer>
+  </div>
+
+  <script src="forest.js"></script>
+</body>
+</html>
