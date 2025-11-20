@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPrompt Coach</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🌱</span>
+        <h1>EcoPrompt Coach</h1>
+      </div>
+      <button class="settings-btn" id="settingsBtn" title="Settings">⚙️</button>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="impact">Impact</button>
+      <button class="tab" data-tab="coach">Coach</button>
+      <button class="tab" data-tab="achievements">Achievements</button>
+      <button class="tab" data-tab="alternatives">Alternatives</button>
+    </nav>
+
+    <!-- Impact Tab -->
+    <div class="tab-content active" id="impact">
+      <div class="stat-card primary">
+        <h2>Today's Impact</h2>
+        <div class="co2-display">
+          <span class="co2-value" id="todayCO2">0</span>
+          <span class="co2-unit">g CO₂</span>
+        </div>
+        <p class="comparison" id="comparison">Equal to 0 cups of tea</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">📊</span>
+          <div>
+            <p class="stat-label">Queries Today</p>
+            <p class="stat-value" id="todayQueries">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">⚡</span>
+          <div>
+            <p class="stat-label">Efficiency</p>
+            <p class="stat-value" id="efficiency">0%</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">💾</span>
+          <div>
+            <p class="stat-label">Saved This Week</p>
+            <p class="stat-value" id="savedCO2">0g</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🌳</span>
+          <div>
+            <p class="stat-label">Trees Grown</p>
+            <p class="stat-value" id="treesGrown">0</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3>Weekly Trend</h3>
+        <canvas id="weeklyChart"></canvas>
+      </div>
+
+      <div class="leaderboard">
+        <h3>🏆 Team Ranking</h3>
+        <div class="rank-item">
+          <span class="rank-badge">🥇</span>
+          <span class="rank-name">IT Department</span>
+          <span class="rank-score">245g saved</span>
+        </div>
+        <div class="rank-item">
+          <span class="rank-badge">🥈</span>
+          <span class="rank-name">Finance Team</span>
+          <span class="rank-score">198g saved</span>
+        </div>
+        <div class="rank-item your-rank">
+          <span class="rank-badge">4th</span>
+          <span class="rank-name">Your Team</span>
+          <span class="rank-score">156g saved</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coach Tab -->
+    <div class="tab-content" id="coach">
+      <div class="coach-section">
+        <h2>✨ Prompt Optimizer</h2>
+        <p class="help-text">Paste your prompt below for optimization suggestions:</p>
+
+        <textarea id="promptInput" placeholder="Enter your AI prompt here..." rows="6"></textarea>
+
+        <button class="btn-primary" id="analyzeBtn">Analyze Prompt</button>
+
+        <div id="analysisResults" class="analysis-results" style="display: none;">
+          <div class="score-display">
+            <h3>Quality Score</h3>
+            <div class="score-circle" id="scoreCircle">
+              <span id="scoreValue">0</span>
+              <span class="score-max">/100</span>
+            </div>
+          </div>
+
+          <div class="suggestions">
+            <h4>💡 Suggestions</h4>
+            <ul id="suggestionsList"></ul>
+          </div>
+
+          <div class="improved-prompt">
+            <h4>✅ Improved Version</h4>
+            <p id="improvedPrompt"></p>
+            <button class="btn-secondary" id="copyBtn">Copy to Clipboard</button>
+          </div>
+
+          <div class="impact-estimate">
+            <h4>🌍 Estimated Impact</h4>
+            <div class="impact-comparison">
+              <div class="impact-before">
+                <span class="impact-label">Before</span>
+                <span class="impact-value" id="beforeImpact">~5 queries</span>
+              </div>
+              <span class="impact-arrow">→</span>
+              <div class="impact-after">
+                <span class="impact-label">After</span>
+                <span class="impact-value" id="afterImpact">~1 query</span>
+              </div>
+            </div>
+            <p class="impact-savings">Save up to <strong id="savingsAmount">1.28g CO₂</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-section">
+        <h3>💭 Quick Tips</h3>
+        <div class="tip-card">
+          <span class="tip-icon">🎯</span>
+          <div>
+            <h4>Be Specific</h4>
+            <p>Include context, constraints, and desired format</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <span class="tip-icon">📋</span>
+          <div>
+            <h4>Use Templates</h4>
+            <p>Start with proven prompt structures</p>
+          </div>
+        </div>
+        <div class="tip-card">
+          <span class="tip-icon">🔄</span>
+          <div>
+            <h4>Iterate Smart</h4>
+            <p>Refine prompts, don't start from scratch</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Tab -->
+    <div class="tab-content" id="achievements">
+      <div class="achievements-section">
+        <h2>🏆 Your Achievements</h2>
+
+        <div class="achievement-stats">
+          <div class="achievement-stat">
+            <span class="stat-number" id="totalBadges">5</span>
+            <span class="stat-label">Badges Earned</span>
+          </div>
+          <div class="achievement-stat">
+            <span class="stat-number" id="currentStreak">7</span>
+            <span class="stat-label">Day Streak</span>
+          </div>
+          <div class="achievement-stat">
+            <span class="stat-number" id="nextReward">45</span>
+            <span class="stat-label">Until Next Reward</span>
+          </div>
+        </div>
+
+        <div class="achievement-list">
+          <div class="achievement-card unlocked">
+            <span class="achievement-icon">🌱</span>
+            <div class="achievement-info">
+              <h4>First Steps</h4>
+              <p>Installed EcoPrompt Coach</p>
+              <span class="achievement-date">Earned today</span>
+            </div>
+          </div>
+
+          <div class="achievement-card unlocked">
+            <span class="achievement-icon">💬</span>
+            <div class="achievement-info">
+              <h4>Efficient Starter</h4>
+              <p>10 one-shot prompts</p>
+              <span class="achievement-date">Progress: 10/10</span>
+            </div>
+          </div>
+
+          <div class="achievement-card in-progress">
+            <span class="achievement-icon">🌿</span>
+            <div class="achievement-info">
+              <h4>Growing Green</h4>
+              <p>Save 100g CO₂</p>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%"></div>
+              </div>
+              <span class="achievement-date">Progress: 45/100g</span>
+            </div>
+          </div>
+
+          <div class="achievement-card locked">
+            <span class="achievement-icon">🏅</span>
+            <div class="achievement-info">
+              <h4>Prompt Master</h4>
+              <p>50 one-shot prompts</p>
+              <span class="achievement-date">Locked</span>
+            </div>
+          </div>
+
+          <div class="achievement-card locked">
+            <span class="achievement-icon">🌳</span>
+            <div class="achievement-info">
+              <h4>Carbon Champion</h4>
+              <p>Save 1kg CO₂</p>
+              <span class="achievement-date">Locked</span>
+            </div>
+          </div>
+
+          <div class="achievement-card locked">
+            <span class="achievement-icon">🌟</span>
+            <div class="achievement-info">
+              <h4>Sustainability Star</h4>
+              <p>Save 10kg CO₂</p>
+              <span class="achievement-date">Locked</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="credits-section">
+          <h3>🎫 Guilt-Free AI Credits</h3>
+          <div class="credits-display">
+            <span class="credits-value" id="creditsBalance">150</span>
+            <span class="credits-label">Available Credits</span>
+          </div>
+          <p class="credits-info">Earn credits through sustainable actions to use AI guilt-free!</p>
+
+          <div class="earn-credits">
+            <h4>Earn More Credits:</h4>
+            <button class="credit-action">
+              <span>📚 Complete Quiz</span>
+              <span class="credit-reward">+50</span>
+            </button>
+            <button class="credit-action">
+              <span>🌍 Use Ecosia for 1 Week</span>
+              <span class="credit-reward">+25</span>
+            </button>
+            <button class="credit-action">
+              <span>♻️ Switch to Sustainable AI</span>
+              <span class="credit-reward">+100</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alternatives Tab -->
+    <div class="tab-content" id="alternatives">
+      <div class="alternatives-section">
+        <h2>🌍 Sustainable Alternatives</h2>
+        <p class="help-text">Switch to eco-friendly tools and reduce your digital carbon footprint</p>
+
+        <!-- Search Engines -->
+        <div class="alternative-category">
+          <h3>🔍 Search Engines</h3>
+          <div class="alternative-card featured">
+            <div class="alternative-header">
+              <img src="https://www.ecosia.org/favicon.ico" alt="Ecosia" class="alternative-logo">
+              <div>
+                <h4>Ecosia</h4>
+                <span class="alternative-tag eco">Plants Trees</span>
+                <span class="alternative-tag">200% Renewable</span>
+              </div>
+            </div>
+            <p>Every 45-50 searches plants one tree. Over 200 million trees planted!</p>
+            <div class="alternative-impact">
+              <span>💚 Impact: High</span>
+              <span>⚡ vs Google: -4.4g CO₂/search</span>
+            </div>
+            <div class="alternative-actions">
+              <a href="https://www.ecosia.org" target="_blank" class="btn-secondary">Visit Website</a>
+              <button class="btn-primary">Set as Default</button>
+            </div>
+          </div>
+
+          <div class="alternative-card">
+            <div class="alternative-header">
+              <img src="https://www.qwant.com/favicon.ico" alt="Qwant" class="alternative-logo">
+              <div>
+                <h4>Qwant</h4>
+                <span class="alternative-tag">Privacy-First</span>
+                <span class="alternative-tag">GDPR</span>
+              </div>
+            </div>
+            <p>European search engine with no tracking and renewable energy hosting.</p>
+            <div class="alternative-impact">
+              <span>🔒 Privacy: Excellent</span>
+              <span>⚡ Carbon-Neutral</span>
+            </div>
+            <div class="alternative-actions">
+              <a href="https://www.qwant.com" target="_blank" class="btn-secondary">Visit Website</a>
+              <button class="btn-outline">Learn More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Models -->
+        <div class="alternative-category">
+          <h3>🤖 AI Models</h3>
+          <div class="alternative-card featured">
+            <div class="alternative-header">
+              <div class="alternative-logo-text">DS</div>
+              <div>
+                <h4>DeepSeek AI</h4>
+                <span class="alternative-tag eco">10x More Efficient</span>
+                <span class="alternative-tag">Cost-Effective</span>
+              </div>
+            </div>
+            <p>Uses only 2,000 chips vs ChatGPT-4's 25,000. Mixture-of-Experts architecture.</p>
+            <div class="alternative-impact">
+              <span>💚 Impact: Very High</span>
+              <span>⚡ vs GPT-4: -90% energy</span>
+            </div>
+            <div class="alternative-actions">
+              <a href="https://www.deepseek.com" target="_blank" class="btn-secondary">Visit Website</a>
+              <button class="btn-primary">Try Now</button>
+            </div>
+          </div>
+
+          <div class="alternative-card">
+            <div class="alternative-header">
+              <div class="alternative-logo-text">VA</div>
+              <div>
+                <h4>ViroAI</h4>
+                <span class="alternative-tag eco">Carbon-Neutral</span>
+                <span class="alternative-tag">Transparent</span>
+              </div>
+            </div>
+            <p>First eco-friendly AI chatbot offsetting carbon of every query with verified projects.</p>
+            <div class="alternative-impact">
+              <span>💚 Impact: High</span>
+              <span>📊 Monthly transparency reports</span>
+            </div>
+            <div class="alternative-actions">
+              <a href="https://www.viro.app" target="_blank" class="btn-secondary">Visit Website</a>
+              <button class="btn-outline">Learn More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Developer Tools -->
+        <div class="alternative-category">
+          <h3>🛠️ Developer Tools</h3>
+          <div class="alternative-card">
+            <div class="alternative-header">
+              <div class="alternative-logo-text">GF</div>
+              <div>
+                <h4>GreenFrame.io</h4>
+                <span class="alternative-tag">Open-Source</span>
+                <span class="alternative-tag">CI/CD</span>
+              </div>
+            </div>
+            <p>Detect carbon leaks in web applications with CI/CD integration.</p>
+            <div class="alternative-impact">
+              <span>🔧 For Developers</span>
+              <span>⚡ Optimize code emissions</span>
+            </div>
+            <div class="alternative-actions">
+              <a href="https://www.greenframe.io" target="_blank" class="btn-secondary">Visit Website</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-all">
+          <button class="btn-outline">View All 25 Alternatives →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Ministry of Finance • Sustainable AI Initiative</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Help</a>
+        <a href="#">Feedback</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
