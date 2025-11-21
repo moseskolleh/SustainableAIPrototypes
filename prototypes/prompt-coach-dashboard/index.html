@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable AI Prompt Coach & Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="icon">🌱</span>
+                <h1>Sustainable AI Hub</h1>
+            </div>
+            <div class="user-info">
+                <span class="user-name">Welcome, User</span>
+                <div class="credits-badge">
+                    <span class="icon">⚡</span>
+                    <span id="credits">250</span> credits
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" data-tab="coach">
+                <span class="icon">🎯</span> Prompt Coach
+            </button>
+            <button class="tab" data-tab="library">
+                <span class="icon">📚</span> Prompt Library
+            </button>
+            <button class="tab" data-tab="dashboard">
+                <span class="icon">📊</span> Dashboard
+            </button>
+            <button class="tab" data-tab="analytics">
+                <span class="icon">📈</span> Analytics
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Prompt Coach Tab -->
+            <div class="tab-content active" id="coach">
+                <div class="split-layout">
+                    <!-- Left: Input -->
+                    <div class="coach-input">
+                        <h2>Optimize Your Prompt</h2>
+                        <p class="subtitle">Get AI-powered suggestions to improve efficiency and reduce environmental impact</p>
+
+                        <div class="form-group">
+                            <label for="original-prompt">Your Prompt:</label>
+                            <textarea
+                                id="original-prompt"
+                                placeholder="Enter your AI prompt here..."
+                                rows="8"
+                            ></textarea>
+                            <div class="char-count">
+                                <span id="char-count">0</span> characters
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-type">Task Type:</label>
+                            <select id="task-type">
+                                <option value="general">General Query</option>
+                                <option value="code">Code Generation</option>
+                                <option value="analysis">Data Analysis</option>
+                                <option value="writing">Writing/Editing</option>
+                                <option value="research">Research</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priority">Priority:</label>
+                            <select id="priority">
+                                <option value="quality">Quality First</option>
+                                <option value="balanced">Balanced</option>
+                                <option value="efficiency">Efficiency First</option>
+                            </select>
+                            <div class="help-text">
+                                <strong>Quality First:</strong> Best results, higher impact<br>
+                                <strong>Balanced:</strong> Good results, moderate impact<br>
+                                <strong>Efficiency First:</strong> Faster, lower impact
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="analyze-btn">
+                            <span class="icon">✨</span> Analyze Prompt
+                        </button>
+                    </div>
+
+                    <!-- Right: Results -->
+                    <div class="coach-output">
+                        <div id="results-placeholder" class="placeholder">
+                            <span class="icon">🎯</span>
+                            <p>Enter a prompt and click "Analyze" to get optimization suggestions</p>
+                        </div>
+
+                        <div id="results-content" class="hidden">
+                            <!-- Impact Metrics -->
+                            <div class="metrics-row">
+                                <div class="metric-card original">
+                                    <span class="label">Original</span>
+                                    <div class="metric-value">
+                                        <span class="icon">💨</span>
+                                        <span id="original-co2">0.45</span> g CO₂
+                                    </div>
+                                    <div class="sub-metric">
+                                        <span id="original-tokens">~180</span> tokens
+                                    </div>
+                                </div>
+
+                                <div class="arrow">→</div>
+
+                                <div class="metric-card optimized">
+                                    <span class="label">Optimized</span>
+                                    <div class="metric-value">
+                                        <span class="icon">🌱</span>
+                                        <span id="optimized-co2">0.32</span> g CO₂
+                                    </div>
+                                    <div class="sub-metric">
+                                        <span id="optimized-tokens">~125</span> tokens
+                                    </div>
+                                </div>
+
+                                <div class="metric-card savings">
+                                    <span class="label">Savings</span>
+                                    <div class="metric-value success">
+                                        <span class="icon">📉</span>
+                                        <span id="savings-percent">29</span>%
+                                    </div>
+                                    <div class="sub-metric">
+                                        <span id="savings-co2">0.13</span> g CO₂
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quality Trade-off Indicator -->
+                            <div class="trade-off-section">
+                                <h3>Quality vs. Efficiency Trade-off</h3>
+                                <div class="trade-off-bar">
+                                    <div class="trade-off-indicator" id="trade-off-indicator"></div>
+                                </div>
+                                <div class="trade-off-labels">
+                                    <span>Higher Efficiency</span>
+                                    <span>Balanced</span>
+                                    <span>Higher Quality</span>
+                                </div>
+                                <p class="trade-off-note" id="trade-off-note"></p>
+                            </div>
+
+                            <!-- Optimized Prompt -->
+                            <div class="optimized-prompt-section">
+                                <h3>Optimized Prompt</h3>
+                                <div class="optimized-prompt" id="optimized-prompt"></div>
+                                <button class="btn btn-secondary" id="copy-btn">
+                                    <span class="icon">📋</span> Copy to Clipboard
+                                </button>
+                                <button class="btn btn-secondary" id="save-library-btn">
+                                    <span class="icon">💾</span> Save to Library
+                                </button>
+                            </div>
+
+                            <!-- Suggestions -->
+                            <div class="suggestions-section">
+                                <h3>Improvement Suggestions</h3>
+                                <div id="suggestions-list"></div>
+                            </div>
+
+                            <!-- Comparison -->
+                            <div class="comparison-section">
+                                <h3>Environmental Impact Comparison</h3>
+                                <div class="comparison-text">
+                                    <p>Your optimization saves <strong id="equiv-value">0.13g</strong> CO₂</p>
+                                    <p class="equiv-text" id="equiv-text"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prompt Library Tab -->
+            <div class="tab-content" id="library">
+                <div class="library-header">
+                    <h2>Prompt Library</h2>
+                    <p class="subtitle">Reusable, optimized prompts for common tasks</p>
+                    <div class="library-actions">
+                        <input type="text" id="library-search" placeholder="Search prompts..." class="search-input">
+                        <select id="library-filter" class="filter-select">
+                            <option value="all">All Categories</option>
+                            <option value="code">Code Generation</option>
+                            <option value="analysis">Data Analysis</option>
+                            <option value="writing">Writing</option>
+                            <option value="research">Research</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="library-grid" id="library-grid">
+                    <!-- Library items will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content" id="dashboard">
+                <h2>Your Sustainability Dashboard</h2>
+                <p class="subtitle">Track your AI usage and environmental impact</p>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌍</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Total CO₂ Saved</div>
+                            <div class="stat-value" id="total-co2-saved">24.3 g</div>
+                            <div class="stat-trend success">↑ 15% this week</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Efficiency Score</div>
+                            <div class="stat-value" id="efficiency-score">1.3</div>
+                            <div class="stat-trend">avg prompts/query</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Queries Optimized</div>
+                            <div class="stat-value" id="optimized-queries">47</div>
+                            <div class="stat-trend">out of 63 total</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Credits Earned</div>
+                            <div class="stat-value" id="credits-earned">250</div>
+                            <div class="stat-trend success">+50 today</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usage Chart -->
+                <div class="chart-card">
+                    <h3>Weekly Usage & Impact</h3>
+                    <canvas id="usage-chart"></canvas>
+                </div>
+
+                <!-- Goals & Achievements -->
+                <div class="two-column">
+                    <div class="goals-card">
+                        <h3>Your Goals</h3>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span>Weekly CO₂ Reduction</span>
+                                <span>18/25 g</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span>Efficiency Target</span>
+                                <span>1.3/1.5</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <span>Prompt Library Usage</span>
+                                <span>12/20 uses</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="achievements-card">
+                        <h3>Recent Achievements</h3>
+                        <div class="achievement-item">
+                            <span class="achievement-icon">🌟</span>
+                            <div class="achievement-content">
+                                <div class="achievement-title">Efficiency Master</div>
+                                <div class="achievement-desc">Maintained <1.5 avg for 7 days</div>
+                            </div>
+                        </div>
+                        <div class="achievement-item">
+                            <span class="achievement-icon">🌱</span>
+                            <div class="achievement-content">
+                                <div class="achievement-title">Green Warrior</div>
+                                <div class="achievement-desc">Saved 50g CO₂ total</div>
+                            </div>
+                        </div>
+                        <div class="achievement-item locked">
+                            <span class="achievement-icon">🏆</span>
+                            <div class="achievement-content">
+                                <div class="achievement-title">Sustainability Champion</div>
+                                <div class="achievement-desc">Save 100g CO₂ (50% complete)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sustainable Alternatives -->
+                <div class="alternatives-card">
+                    <h3>Recommended Sustainable AI Tools</h3>
+                    <div class="alternatives-grid">
+                        <div class="alternative-item">
+                            <div class="alt-header">
+                                <span class="alt-name">🔍 Ecosia Search</span>
+                                <span class="alt-badge">Active</span>
+                            </div>
+                            <p>Plants trees with search revenue</p>
+                            <div class="alt-impact">Impact: <strong>45 trees planted</strong></div>
+                        </div>
+                        <div class="alternative-item">
+                            <div class="alt-header">
+                                <span class="alt-name">🤖 DeepSeek AI</span>
+                                <span class="alt-badge recommend">Recommended</span>
+                            </div>
+                            <p>10x more energy efficient</p>
+                            <div class="alt-impact">Potential savings: <strong>80% CO₂</strong></div>
+                        </div>
+                        <div class="alternative-item">
+                            <div class="alt-header">
+                                <span class="alt-name">☁️ Green Cloud</span>
+                                <span class="alt-badge">Available</span>
+                            </div>
+                            <p>100% renewable energy hosting</p>
+                            <div class="alt-impact">Carbon neutral infrastructure</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div class="tab-content" id="analytics">
+                <h2>Advanced Analytics</h2>
+                <p class="subtitle">Deep dive into your usage patterns and environmental impact</p>
+
+                <!-- Azure Metrics Integration -->
+                <div class="azure-section">
+                    <h3>Azure Platform Metrics</h3>
+                    <p class="info-text">Integrated with Azure monitoring for real-time data</p>
+
+                    <div class="azure-metrics">
+                        <div class="azure-metric">
+                            <div class="metric-label">Total Interactions</div>
+                            <div class="metric-value-large">1,247</div>
+                            <div class="metric-period">This month</div>
+                        </div>
+                        <div class="azure-metric">
+                            <div class="metric-label">Database Calls</div>
+                            <div class="metric-value-large">3,891</div>
+                            <div class="metric-period">This month</div>
+                        </div>
+                        <div class="azure-metric">
+                            <div class="metric-label">Prompt Requests</div>
+                            <div class="metric-value-large">856</div>
+                            <div class="metric-period">This month</div>
+                        </div>
+                        <div class="azure-metric">
+                            <div class="metric-label">Est. CO₂ Emissions</div>
+                            <div class="metric-value-large">385 g</div>
+                            <div class="metric-period">This month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time-based Analysis -->
+                <div class="time-analysis">
+                    <h3>Usage Patterns</h3>
+                    <div class="heatmap-container">
+                        <canvas id="heatmap-chart"></canvas>
+                    </div>
+                    <p class="insight">💡 <strong>Insight:</strong> Your peak usage is Tuesday 10-11 AM. Consider time-shifting non-urgent queries to off-peak hours for lower carbon intensity.</p>
+                </div>
+
+                <!-- Tool Diversity -->
+                <div class="tool-diversity">
+                    <h3>AI Tool Diversity</h3>
+                    <canvas id="tool-diversity-chart"></canvas>
+                    <p class="insight">💡 <strong>Insight:</strong> You're using 4 different AI tools. Great diversity! Consider exploring DeepSeek AI for routine tasks (80% less impact).</p>
+                </div>
+
+                <!-- Efficiency Trends -->
+                <div class="efficiency-trends">
+                    <h3>Prompt Efficiency Over Time</h3>
+                    <canvas id="efficiency-trend-chart"></canvas>
+                    <p class="insight">✅ <strong>Achievement:</strong> Your average prompts per query improved from 2.1 to 1.3 over the past month!</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
