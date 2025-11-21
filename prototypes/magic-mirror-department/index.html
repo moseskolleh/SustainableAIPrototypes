@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Sustainability Mirror</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="mirror-container">
+        <!-- Header -->
+        <header class="mirror-header">
+            <div class="logo">
+                <span class="icon">🪞</span>
+                <h1>Department Sustainability Dashboard</h1>
+            </div>
+            <div class="department-selector">
+                <select id="department-select">
+                    <option value="it">IT Department</option>
+                    <option value="finance">Finance Team</option>
+                    <option value="hr">Human Resources</option>
+                    <option value="policy">Policy & Strategy</option>
+                    <option value="operations">Operations</option>
+                </select>
+            </div>
+            <div class="live-indicator">
+                <span class="pulse"></span>
+                <span>LIVE</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="mirror-content">
+            <!-- Overall Health Score -->
+            <section class="health-section">
+                <div class="health-score-container">
+                    <div class="health-circle" id="health-circle">
+                        <svg width="300" height="300" viewBox="0 0 300 300">
+                            <circle cx="150" cy="150" r="120" fill="none" stroke="#e5e7eb" stroke-width="20"/>
+                            <circle id="health-progress" cx="150" cy="150" r="120" fill="none"
+                                    stroke="#10b981" stroke-width="20" stroke-linecap="round"
+                                    transform="rotate(-90 150 150)"
+                                    stroke-dasharray="754" stroke-dashoffset="377"/>
+                            <text x="150" y="140" text-anchor="middle" class="score-value" id="score-value">75</text>
+                            <text x="150" y="170" text-anchor="middle" class="score-label">Sustainability</text>
+                            <text x="150" y="190" text-anchor="middle" class="score-label">Score</text>
+                        </svg>
+                    </div>
+                    <div class="health-message" id="health-message">
+                        <span class="icon">🌱</span>
+                        <p class="message-text">Your department is doing <strong>Good</strong>!</p>
+                        <p class="message-subtext">Keep up the sustainable AI practices</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Metrics Grid -->
+            <section class="metrics-grid">
+                <div class="metric-card prompt-efficiency">
+                    <div class="metric-header">
+                        <span class="metric-icon">⚡</span>
+                        <span class="metric-title">Prompt Efficiency</span>
+                    </div>
+                    <div class="metric-value-large" id="prompt-efficiency">1.4</div>
+                    <div class="metric-subtitle">avg prompts per query</div>
+                    <div class="metric-trend success">
+                        <span>↓ 0.3</span> from last week
+                    </div>
+                    <div class="metric-target">
+                        Target: <strong>< 1.5</strong>
+                    </div>
+                </div>
+
+                <div class="metric-card energy-usage">
+                    <div class="metric-header">
+                        <span class="metric-icon">🔋</span>
+                        <span class="metric-title">Energy Usage</span>
+                    </div>
+                    <div class="metric-value-large" id="energy-usage">8.7</div>
+                    <div class="metric-subtitle">kWh this week</div>
+                    <div class="metric-trend warning">
+                        <span>↑ 1.2</span> from last week
+                    </div>
+                    <div class="metric-comparison">
+                        ≈ <strong>47 hours</strong> of laptop usage
+                    </div>
+                </div>
+
+                <div class="metric-card tool-diversity">
+                    <div class="metric-header">
+                        <span class="metric-icon">🧰</span>
+                        <span class="metric-title">Tool Diversity</span>
+                    </div>
+                    <div class="metric-value-large" id="tool-diversity">5</div>
+                    <div class="metric-subtitle">different AI tools used</div>
+                    <div class="metric-trend success">
+                        <span>+1</span> new tool this week
+                    </div>
+                    <div class="tool-badges">
+                        <span class="tool-badge">ChatGPT</span>
+                        <span class="tool-badge">Claude</span>
+                        <span class="tool-badge">Gemini</span>
+                        <span class="tool-badge">+2</span>
+                    </div>
+                </div>
+
+                <div class="metric-card co2-impact">
+                    <div class="metric-header">
+                        <span class="metric-icon">🌍</span>
+                        <span class="metric-title">CO₂ Impact</span>
+                    </div>
+                    <div class="metric-value-large" id="co2-impact">3.4</div>
+                    <div class="metric-subtitle">kg CO₂ this month</div>
+                    <div class="metric-trend success">
+                        <span>↓ 0.8 kg</span> from last month
+                    </div>
+                    <div class="metric-comparison">
+                        = <strong>18 km</strong> of car driving
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weekly Chart -->
+            <section class="chart-section">
+                <h2>Weekly Performance Trends</h2>
+                <div class="chart-container">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Actionable Tips Section -->
+            <section class="tips-section">
+                <h2>
+                    <span class="icon">💡</span>
+                    Actionable Tips for Your Department
+                </h2>
+                <div class="tips-grid" id="tips-grid">
+                    <!-- Tips will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- Department Leaderboard -->
+            <section class="leaderboard-section">
+                <h2>
+                    <span class="icon">🏆</span>
+                    Ministry-Wide Rankings
+                </h2>
+                <div class="leaderboard-grid">
+                    <div class="leaderboard-column">
+                        <h3>Top Performers This Week</h3>
+                        <div class="leaderboard-list">
+                            <div class="leaderboard-item rank-1">
+                                <span class="rank">🥇</span>
+                                <span class="dept-name">Policy & Strategy</span>
+                                <span class="score">92</span>
+                            </div>
+                            <div class="leaderboard-item rank-2">
+                                <span class="rank">🥈</span>
+                                <span class="dept-name">Human Resources</span>
+                                <span class="score">87</span>
+                            </div>
+                            <div class="leaderboard-item rank-3">
+                                <span class="rank">🥉</span>
+                                <span class="dept-name">IT Department</span>
+                                <span class="score">75</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">4</span>
+                                <span class="dept-name">Finance Team</span>
+                                <span class="score">68</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">5</span>
+                                <span class="dept-name">Operations</span>
+                                <span class="score">62</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-column">
+                        <h3>Most Improved</h3>
+                        <div class="improvement-list">
+                            <div class="improvement-item">
+                                <span class="dept-name">Operations</span>
+                                <span class="improvement">+15 points</span>
+                            </div>
+                            <div class="improvement-item">
+                                <span class="dept-name">Finance Team</span>
+                                <span class="improvement">+12 points</span>
+                            </div>
+                            <div class="improvement-item">
+                                <span class="dept-name">IT Department</span>
+                                <span class="improvement">+8 points</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-section">
+                <div class="cta-content">
+                    <h2>Want to Learn More?</h2>
+                    <p>Scan the QR code to access the Sustainable AI Toolkit</p>
+                    <div class="qr-code">
+                        <div class="qr-placeholder">
+                            <svg width="150" height="150" viewBox="0 0 150 150">
+                                <rect width="150" height="150" fill="white"/>
+                                <rect x="10" y="10" width="50" height="50" fill="black"/>
+                                <rect x="90" y="10" width="50" height="50" fill="black"/>
+                                <rect x="10" y="90" width="50" height="50" fill="black"/>
+                                <rect x="20" y="20" width="30" height="30" fill="white"/>
+                                <rect x="100" y="20" width="30" height="30" fill="white"/>
+                                <rect x="20" y="100" width="30" height="30" fill="white"/>
+                                <!-- Simplified QR pattern -->
+                                <rect x="70" y="30" width="10" height="10" fill="black"/>
+                                <rect x="70" y="50" width="10" height="10" fill="black"/>
+                                <rect x="70" y="70" width="10" height="10" fill="black"/>
+                                <rect x="90" y="70" width="10" height="10" fill="black"/>
+                                <rect x="110" y="70" width="10" height="10" fill="black"/>
+                                <rect x="70" y="90" width="10" height="10" fill="black"/>
+                                <rect x="90" y="110" width="10" height="10" fill="black"/>
+                            </svg>
+                        </div>
+                        <p class="qr-label">Sustainable AI Hub</p>
+                    </div>
+                    <div class="cta-links">
+                        <a href="#" class="cta-button">
+                            <span class="icon">🎯</span>
+                            Prompt Coach Tool
+                        </a>
+                        <a href="#" class="cta-button">
+                            <span class="icon">📚</span>
+                            Learning Resources
+                        </a>
+                        <a href="#" class="cta-button">
+                            <span class="icon">🌱</span>
+                            Eco Alternatives
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mirror-footer">
+            <div class="footer-content">
+                <p>Ministry of Finance • Sustainable AI Initiative</p>
+                <p class="update-time">Last updated: <span id="update-time">Just now</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="mirror.js"></script>
+</body>
+</html>
