@@ -253,8 +253,12 @@ body {
   border-bottom-color: var(--eco-green-600);
 }
 
-/* Tab content */
+/* Tab content - show by default, hide only when .hidden class is present */
 .tab-content {
+  display: block;
+}
+
+.tab-content.hidden {
   display: none;
 }
 
