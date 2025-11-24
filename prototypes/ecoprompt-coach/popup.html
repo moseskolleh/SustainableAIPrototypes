@@ -3,409 +3,427 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoPrompt Coach</title>
-  <link rel="stylesheet" href="popup.css">
+  <title>Eco-Smart: AI Sustainability Tool</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'eco-green': {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      width: 480px;
+      min-height: 600px;
+      max-height: 700px;
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
+<body class="bg-gray-50 overflow-hidden">
+  <div class="flex flex-col h-screen max-h-[700px]">
+
     <!-- Header -->
-    <header class="header">
-      <div class="logo">
-        <span class="logo-icon">🌱</span>
-        <h1>EcoPrompt Coach</h1>
+    <header class="bg-gradient-to-r from-eco-green-700 to-eco-green-600 text-white px-5 py-4 shadow-lg">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="text-3xl">🌱</div>
+          <div>
+            <h1 class="text-lg font-bold">Eco-Smart</h1>
+            <p class="text-xs opacity-90">AI Sustainability Tool</p>
+          </div>
+        </div>
+        <button id="settingsBtn" class="p-2 hover:bg-white/10 rounded-lg transition" title="Settings">
+          ⚙️
+        </button>
       </div>
-      <button class="settings-btn" id="settingsBtn" title="Settings">⚙️</button>
     </header>
 
-    <!-- Tabs -->
-    <nav class="tabs">
-      <button class="tab active" data-tab="impact">Impact</button>
-      <button class="tab" data-tab="coach">Coach</button>
-      <button class="tab" data-tab="achievements">Achievements</button>
-      <button class="tab" data-tab="alternatives">Alternatives</button>
+    <!-- Tab Navigation -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm">
+      <div class="flex">
+        <button class="tab-btn flex-1 px-4 py-3 text-sm font-medium text-gray-600 hover:text-eco-green-600 hover:bg-eco-green-50 transition-colors border-b-2 border-transparent active" data-tab="calculator">
+          📊 Calculator
+        </button>
+        <button class="tab-btn flex-1 px-4 py-3 text-sm font-medium text-gray-600 hover:text-eco-green-600 hover:bg-eco-green-50 transition-colors border-b-2 border-transparent" data-tab="optimizer">
+          ✨ Optimizer
+        </button>
+        <button class="tab-btn flex-1 px-4 py-3 text-sm font-medium text-gray-600 hover:text-eco-green-600 hover:bg-eco-green-50 transition-colors border-b-2 border-transparent" data-tab="library">
+          📚 Library
+        </button>
+        <button class="tab-btn flex-1 px-4 py-3 text-sm font-medium text-gray-600 hover:text-eco-green-600 hover:bg-eco-green-50 transition-colors border-b-2 border-transparent" data-tab="settings">
+          ⚙️ Settings
+        </button>
+      </div>
     </nav>
 
-    <!-- Impact Tab -->
-    <div class="tab-content active" id="impact">
-      <div class="stat-card primary">
-        <h2>Today's Impact</h2>
-        <div class="co2-display">
-          <span class="co2-value" id="todayCO2">0</span>
-          <span class="co2-unit">g CO₂</span>
-        </div>
-        <p class="comparison" id="comparison">Equal to 0 cups of tea</p>
-      </div>
+    <!-- Tab Content Container -->
+    <div class="flex-1 overflow-y-auto">
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-icon">📊</span>
-          <div>
-            <p class="stat-label">Queries Today</p>
-            <p class="stat-value" id="todayQueries">0</p>
+      <!-- CALCULATOR TAB -->
+      <div id="calculator-tab" class="tab-content p-5 space-y-4">
+        <div class="bg-white rounded-lg shadow-md p-4 border border-eco-green-100">
+          <h2 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+            <span>💬</span> Your AI Prompt
+          </h2>
+
+          <textarea
+            id="promptInput"
+            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-eco-green-500 focus:outline-none resize-none transition-colors"
+            rows="5"
+            placeholder="Type or paste your AI prompt here...&#10;&#10;As you type, we'll calculate the environmental impact in real-time using data from peer-reviewed research."
+          ></textarea>
+
+          <div class="mt-2 text-xs text-gray-500 flex items-center justify-between">
+            <span id="charCount">0 characters (~0 tokens)</span>
+            <select id="outputType" class="text-xs border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-eco-green-500">
+              <option value="general">General Response</option>
+              <option value="brief">Brief Answer</option>
+              <option value="analysis">Detailed Analysis</option>
+              <option value="code">Code Generation</option>
+              <option value="creative">Creative Writing</option>
+            </select>
           </div>
         </div>
-        <div class="stat-card">
-          <span class="stat-icon">⚡</span>
-          <div>
-            <p class="stat-label">Efficiency</p>
-            <p class="stat-value" id="efficiency">0%</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-icon">💾</span>
-          <div>
-            <p class="stat-label">Saved This Week</p>
-            <p class="stat-value" id="savedCO2">0g</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-icon">🌳</span>
-          <div>
-            <p class="stat-label">Trees Grown</p>
-            <p class="stat-value" id="treesGrown">0</p>
-          </div>
-        </div>
-      </div>
 
-      <div class="chart-container">
-        <h3>Weekly Trend</h3>
-        <canvas id="weeklyChart"></canvas>
-      </div>
+        <!-- Real-Time Impact Display -->
+        <div id="impactResults" class="space-y-3">
 
-      <div class="leaderboard">
-        <h3>🏆 Team Ranking</h3>
-        <div class="rank-item">
-          <span class="rank-badge">🥇</span>
-          <span class="rank-name">IT Department</span>
-          <span class="rank-score">245g saved</span>
-        </div>
-        <div class="rank-item">
-          <span class="rank-badge">🥈</span>
-          <span class="rank-name">Finance Team</span>
-          <span class="rank-score">198g saved</span>
-        </div>
-        <div class="rank-item your-rank">
-          <span class="rank-badge">4th</span>
-          <span class="rank-name">Your Team</span>
-          <span class="rank-score">156g saved</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Coach Tab -->
-    <div class="tab-content" id="coach">
-      <div class="coach-section">
-        <h2>✨ Prompt Optimizer</h2>
-        <p class="help-text">Paste your prompt below for optimization suggestions:</p>
-
-        <textarea id="promptInput" placeholder="Enter your AI prompt here..." rows="6"></textarea>
-
-        <button class="btn-primary" id="analyzeBtn">Analyze Prompt</button>
-
-        <div id="analysisResults" class="analysis-results" style="display: none;">
-          <div class="score-display">
-            <h3>Quality Score</h3>
-            <div class="score-circle" id="scoreCircle">
-              <span id="scoreValue">0</span>
-              <span class="score-max">/100</span>
-            </div>
-          </div>
-
-          <div class="suggestions">
-            <h4>💡 Suggestions</h4>
-            <ul id="suggestionsList"></ul>
-          </div>
-
-          <div class="improved-prompt">
-            <h4>✅ Improved Version</h4>
-            <p id="improvedPrompt"></p>
-            <button class="btn-secondary" id="copyBtn">Copy to Clipboard</button>
-          </div>
-
-          <div class="impact-estimate">
-            <h4>🌍 Estimated Impact</h4>
-            <div class="impact-comparison">
-              <div class="impact-before">
-                <span class="impact-label">Before</span>
-                <span class="impact-value" id="beforeImpact">~5 queries</span>
+          <!-- Eco Score Card -->
+          <div class="bg-gradient-to-br from-eco-green-50 to-white rounded-lg shadow-md p-4 border-2 border-eco-green-200">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-medium text-gray-600">Eco-Score</h3>
+                <p class="text-xs text-gray-500 mt-1">Lower is better</p>
               </div>
-              <span class="impact-arrow">→</span>
-              <div class="impact-after">
-                <span class="impact-label">After</span>
-                <span class="impact-value" id="afterImpact">~1 query</span>
+              <div class="text-right">
+                <div class="text-4xl font-bold text-eco-green-700" id="ecoScore">0</div>
+                <div class="text-xs text-gray-600 mt-1" id="ecoRating">Excellent</div>
               </div>
             </div>
-            <p class="impact-savings">Save up to <strong id="savingsAmount">1.28g CO₂</strong></p>
           </div>
-        </div>
-      </div>
 
-      <div class="tips-section">
-        <h3>💭 Quick Tips</h3>
-        <div class="tip-card">
-          <span class="tip-icon">🎯</span>
-          <div>
-            <h4>Be Specific</h4>
-            <p>Include context, constraints, and desired format</p>
-          </div>
-        </div>
-        <div class="tip-card">
-          <span class="tip-icon">📋</span>
-          <div>
-            <h4>Use Templates</h4>
-            <p>Start with proven prompt structures</p>
-          </div>
-        </div>
-        <div class="tip-card">
-          <span class="tip-icon">🔄</span>
-          <div>
-            <h4>Iterate Smart</h4>
-            <p>Refine prompts, don't start from scratch</p>
-          </div>
-        </div>
-      </div>
-    </div>
+          <!-- Impact Metrics Grid -->
+          <div class="grid grid-cols-3 gap-2">
+            <!-- Energy -->
+            <div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+              <div class="text-2xl mb-1">⚡</div>
+              <div class="text-xs text-gray-600 font-medium">Energy</div>
+              <div class="text-lg font-bold text-gray-800" id="energyValue">0 Wh</div>
+            </div>
 
-    <!-- Achievements Tab -->
-    <div class="tab-content" id="achievements">
-      <div class="achievements-section">
-        <h2>🏆 Your Achievements</h2>
+            <!-- Water -->
+            <div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+              <div class="text-2xl mb-1">💧</div>
+              <div class="text-xs text-gray-600 font-medium">Water</div>
+              <div class="text-lg font-bold text-gray-800" id="waterValue">0 mL</div>
+            </div>
 
-        <div class="achievement-stats">
-          <div class="achievement-stat">
-            <span class="stat-number" id="totalBadges">5</span>
-            <span class="stat-label">Badges Earned</span>
-          </div>
-          <div class="achievement-stat">
-            <span class="stat-number" id="currentStreak">7</span>
-            <span class="stat-label">Day Streak</span>
-          </div>
-          <div class="achievement-stat">
-            <span class="stat-number" id="nextReward">45</span>
-            <span class="stat-label">Until Next Reward</span>
-          </div>
-        </div>
-
-        <div class="achievement-list">
-          <div class="achievement-card unlocked">
-            <span class="achievement-icon">🌱</span>
-            <div class="achievement-info">
-              <h4>First Steps</h4>
-              <p>Installed EcoPrompt Coach</p>
-              <span class="achievement-date">Earned today</span>
+            <!-- Carbon -->
+            <div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+              <div class="text-2xl mb-1">🌍</div>
+              <div class="text-xs text-gray-600 font-medium">Carbon</div>
+              <div class="text-lg font-bold text-gray-800" id="carbonValue">0 g</div>
             </div>
           </div>
 
-          <div class="achievement-card unlocked">
-            <span class="achievement-icon">💬</span>
-            <div class="achievement-info">
-              <h4>Efficient Starter</h4>
-              <p>10 one-shot prompts</p>
-              <span class="achievement-date">Progress: 10/10</span>
-            </div>
-          </div>
-
-          <div class="achievement-card in-progress">
-            <span class="achievement-icon">🌿</span>
-            <div class="achievement-info">
-              <h4>Growing Green</h4>
-              <p>Save 100g CO₂</p>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 45%"></div>
+          <!-- Real-World Analogies -->
+          <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <span>🔍</span> Real-World Equivalents
+            </h3>
+            <div class="space-y-2 text-sm" id="analogiesList">
+              <div class="flex items-center justify-between text-gray-600">
+                <span>💡 LED lightbulb hours</span>
+                <span class="font-semibold" id="analogyLED">0</span>
               </div>
-              <span class="achievement-date">Progress: 45/100g</span>
+              <div class="flex items-center justify-between text-gray-600">
+                <span>📱 Smartphone charges</span>
+                <span class="font-semibold" id="analogyPhone">0</span>
+              </div>
+              <div class="flex items-center justify-between text-gray-600">
+                <span>☕ Cups of coffee boiled</span>
+                <span class="font-semibold" id="analogyCoffee">0</span>
+              </div>
+              <div class="flex items-center justify-between text-gray-600">
+                <span>🔍 Google searches</span>
+                <span class="font-semibold" id="analogySearch">0</span>
+              </div>
+              <div class="flex items-center justify-between text-gray-600">
+                <span>🚗 Driving distance</span>
+                <span class="font-semibold" id="analogyDriving">0 km</span>
+              </div>
             </div>
           </div>
 
-          <div class="achievement-card locked">
-            <span class="achievement-icon">🏅</span>
-            <div class="achievement-info">
-              <h4>Prompt Master</h4>
-              <p>50 one-shot prompts</p>
-              <span class="achievement-date">Locked</span>
-            </div>
-          </div>
+          <!-- Save Button -->
+          <button id="saveToLibraryBtn" class="w-full bg-eco-green-600 hover:bg-eco-green-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            💾 Save to Library
+          </button>
+        </div>
+      </div>
 
-          <div class="achievement-card locked">
-            <span class="achievement-icon">🌳</span>
-            <div class="achievement-info">
-              <h4>Carbon Champion</h4>
-              <p>Save 1kg CO₂</p>
-              <span class="achievement-date">Locked</span>
-            </div>
-          </div>
-
-          <div class="achievement-card locked">
-            <span class="achievement-icon">🌟</span>
-            <div class="achievement-info">
-              <h4>Sustainability Star</h4>
-              <p>Save 10kg CO₂</p>
-              <span class="achievement-date">Locked</span>
-            </div>
-          </div>
+      <!-- OPTIMIZER TAB -->
+      <div id="optimizer-tab" class="tab-content p-5 space-y-4 hidden">
+        <div class="bg-gradient-to-br from-purple-50 to-white rounded-lg shadow-md p-4 border-2 border-purple-200">
+          <h2 class="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
+            <span>✨</span> Prompt Optimizer
+          </h2>
+          <p class="text-sm text-gray-600">
+            Analyze your prompt for redundancy and token inefficiency. Get a concrete optimized version.
+          </p>
         </div>
 
-        <div class="credits-section">
-          <h3>🎫 Guilt-Free AI Credits</h3>
-          <div class="credits-display">
-            <span class="credits-value" id="creditsBalance">150</span>
-            <span class="credits-label">Available Credits</span>
-          </div>
-          <p class="credits-info">Earn credits through sustainable actions to use AI guilt-free!</p>
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Your Prompt to Optimize</label>
+          <textarea
+            id="optimizerInput"
+            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none resize-none transition-colors"
+            rows="6"
+            placeholder="Paste your prompt here for optimization..."
+          ></textarea>
 
-          <div class="earn-credits">
-            <h4>Earn More Credits:</h4>
-            <button class="credit-action">
-              <span>📚 Complete Quiz</span>
-              <span class="credit-reward">+50</span>
-            </button>
-            <button class="credit-action">
-              <span>🌍 Use Ecosia for 1 Week</span>
-              <span class="credit-reward">+25</span>
-            </button>
-            <button class="credit-action">
-              <span>♻️ Switch to Sustainable AI</span>
-              <span class="credit-reward">+100</span>
+          <button id="analyzeBtn" class="w-full mt-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-md">
+            🔍 Analyze & Optimize
+          </button>
+        </div>
+
+        <!-- Analysis Results -->
+        <div id="optimizerResults" class="space-y-3 hidden">
+
+          <!-- Optimized Prompt -->
+          <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-eco-green-500">
+            <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span>✅</span> Optimized Version
+            </h3>
+            <div id="optimizedPrompt" class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg"></div>
+            <button id="copyOptimizedBtn" class="mt-2 text-sm text-eco-green-600 hover:text-eco-green-700 font-medium">
+              📋 Copy to Clipboard
             </button>
           </div>
+
+          <!-- Suggestions -->
+          <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+            <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span>💡</span> Optimization Suggestions
+            </h3>
+            <ul id="suggestionsList" class="space-y-2 text-sm text-gray-600"></ul>
+          </div>
+
+          <!-- Before vs After Comparison -->
+          <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <span>📊</span> Environmental Savings
+            </h3>
+
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="bg-red-50 rounded-lg p-3 border border-red-200">
+                <div class="text-xs text-red-600 font-medium mb-1">Before</div>
+                <div class="text-lg font-bold text-red-700" id="beforeTokens">0</div>
+                <div class="text-xs text-red-600">tokens</div>
+              </div>
+              <div class="bg-eco-green-50 rounded-lg p-3 border border-eco-green-200">
+                <div class="text-xs text-eco-green-600 font-medium mb-1">After</div>
+                <div class="text-lg font-bold text-eco-green-700" id="afterTokens">0</div>
+                <div class="text-xs text-eco-green-600">tokens</div>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-600">💾 Energy Saved</span>
+                <span class="font-bold text-eco-green-700" id="savedEnergy">0 Wh</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-600">💧 Water Saved</span>
+                <span class="font-bold text-eco-green-700" id="savedWater">0 mL</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-gray-600">🌍 Carbon Saved</span>
+                <span class="font-bold text-eco-green-700" id="savedCarbon">0 g</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Alternatives Tab -->
-    <div class="tab-content" id="alternatives">
-      <div class="alternatives-section">
-        <h2>🌍 Sustainable Alternatives</h2>
-        <p class="help-text">Switch to eco-friendly tools and reduce your digital carbon footprint</p>
-
-        <!-- Search Engines -->
-        <div class="alternative-category">
-          <h3>🔍 Search Engines</h3>
-          <div class="alternative-card featured">
-            <div class="alternative-header">
-              <img src="https://www.ecosia.org/favicon.ico" alt="Ecosia" class="alternative-logo">
-              <div>
-                <h4>Ecosia</h4>
-                <span class="alternative-tag eco">Plants Trees</span>
-                <span class="alternative-tag">200% Renewable</span>
-              </div>
-            </div>
-            <p>Every 45-50 searches plants one tree. Over 200 million trees planted!</p>
-            <div class="alternative-impact">
-              <span>💚 Impact: High</span>
-              <span>⚡ vs Google: -4.4g CO₂/search</span>
-            </div>
-            <div class="alternative-actions">
-              <a href="https://www.ecosia.org" target="_blank" class="btn-secondary">Visit Website</a>
-              <button class="btn-primary">Set as Default</button>
-            </div>
+      <!-- LIBRARY TAB -->
+      <div id="library-tab" class="tab-content p-5 space-y-4 hidden">
+        <div class="bg-gradient-to-br from-blue-50 to-white rounded-lg shadow-md p-4 border-2 border-blue-200">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+              <span>📚</span> Eco-Prompt Library
+            </h2>
+            <span id="libraryCount" class="text-sm font-medium text-blue-600">0 prompts</span>
           </div>
-
-          <div class="alternative-card">
-            <div class="alternative-header">
-              <img src="https://www.qwant.com/favicon.ico" alt="Qwant" class="alternative-logo">
-              <div>
-                <h4>Qwant</h4>
-                <span class="alternative-tag">Privacy-First</span>
-                <span class="alternative-tag">GDPR</span>
-              </div>
-            </div>
-            <p>European search engine with no tracking and renewable energy hosting.</p>
-            <div class="alternative-impact">
-              <span>🔒 Privacy: Excellent</span>
-              <span>⚡ Carbon-Neutral</span>
-            </div>
-            <div class="alternative-actions">
-              <a href="https://www.qwant.com" target="_blank" class="btn-secondary">Visit Website</a>
-              <button class="btn-outline">Learn More</button>
-            </div>
-          </div>
+          <p class="text-sm text-gray-600">
+            Your personal collection of efficient, green prompts.
+          </p>
         </div>
 
-        <!-- AI Models -->
-        <div class="alternative-category">
-          <h3>🤖 AI Models</h3>
-          <div class="alternative-card featured">
-            <div class="alternative-header">
-              <div class="alternative-logo-text">DS</div>
-              <div>
-                <h4>DeepSeek AI</h4>
-                <span class="alternative-tag eco">10x More Efficient</span>
-                <span class="alternative-tag">Cost-Effective</span>
-              </div>
-            </div>
-            <p>Uses only 2,000 chips vs ChatGPT-4's 25,000. Mixture-of-Experts architecture.</p>
-            <div class="alternative-impact">
-              <span>💚 Impact: Very High</span>
-              <span>⚡ vs GPT-4: -90% energy</span>
-            </div>
-            <div class="alternative-actions">
-              <a href="https://www.deepseek.com" target="_blank" class="btn-secondary">Visit Website</a>
-              <button class="btn-primary">Try Now</button>
-            </div>
-          </div>
-
-          <div class="alternative-card">
-            <div class="alternative-header">
-              <div class="alternative-logo-text">VA</div>
-              <div>
-                <h4>ViroAI</h4>
-                <span class="alternative-tag eco">Carbon-Neutral</span>
-                <span class="alternative-tag">Transparent</span>
-              </div>
-            </div>
-            <p>First eco-friendly AI chatbot offsetting carbon of every query with verified projects.</p>
-            <div class="alternative-impact">
-              <span>💚 Impact: High</span>
-              <span>📊 Monthly transparency reports</span>
-            </div>
-            <div class="alternative-actions">
-              <a href="https://www.viro.app" target="_blank" class="btn-secondary">Visit Website</a>
-              <button class="btn-outline">Learn More</button>
-            </div>
-          </div>
+        <!-- Search and Actions -->
+        <div class="flex gap-2">
+          <input
+            type="text"
+            id="librarySearch"
+            class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-sm"
+            placeholder="Search by text or tags..."
+          />
+          <button id="exportLibraryBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+            📥 Export
+          </button>
         </div>
 
-        <!-- Developer Tools -->
-        <div class="alternative-category">
-          <h3>🛠️ Developer Tools</h3>
-          <div class="alternative-card">
-            <div class="alternative-header">
-              <div class="alternative-logo-text">GF</div>
-              <div>
-                <h4>GreenFrame.io</h4>
-                <span class="alternative-tag">Open-Source</span>
-                <span class="alternative-tag">CI/CD</span>
-              </div>
-            </div>
-            <p>Detect carbon leaks in web applications with CI/CD integration.</p>
-            <div class="alternative-impact">
-              <span>🔧 For Developers</span>
-              <span>⚡ Optimize code emissions</span>
-            </div>
-            <div class="alternative-actions">
-              <a href="https://www.greenframe.io" target="_blank" class="btn-secondary">Visit Website</a>
-            </div>
-          </div>
+        <!-- Tag Filter -->
+        <div id="tagFilter" class="flex flex-wrap gap-2 hidden">
+          <!-- Tags will be dynamically inserted here -->
         </div>
 
-        <div class="view-all">
-          <button class="btn-outline">View All 25 Alternatives →</button>
+        <!-- Library Items -->
+        <div id="libraryItems" class="space-y-3">
+          <!-- Empty state -->
+          <div id="emptyLibrary" class="text-center py-8">
+            <div class="text-6xl mb-3">📚</div>
+            <p class="text-gray-500 text-sm">Your library is empty</p>
+            <p class="text-gray-400 text-xs mt-1">Save efficient prompts from the Calculator tab</p>
+          </div>
         </div>
       </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="settings-tab" class="tab-content p-5 space-y-4 hidden">
+        <div class="bg-gradient-to-br from-gray-50 to-white rounded-lg shadow-md p-4 border-2 border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
+            <span>⚙️</span> Settings
+          </h2>
+          <p class="text-sm text-gray-600">
+            Customize calculations for your region and preferences.
+          </p>
+        </div>
+
+        <!-- Unit System -->
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Unit System</label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="radio" name="units" value="metric" class="w-4 h-4 text-eco-green-600 focus:ring-eco-green-500" checked />
+              <div>
+                <div class="text-sm font-medium text-gray-700">Metric</div>
+                <div class="text-xs text-gray-500">Liters, kilometers, grams</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="radio" name="units" value="imperial" class="w-4 h-4 text-eco-green-600 focus:ring-eco-green-500" />
+              <div>
+                <div class="text-sm font-medium text-gray-700">Imperial</div>
+                <div class="text-xs text-gray-500">Gallons, miles, ounces</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Grid Intensity Profile -->
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Grid Intensity Profile</label>
+          <select id="gridProfile" class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-eco-green-500 focus:outline-none text-sm">
+            <option value="AZURE_OPENAI">Azure/OpenAI (US - Default)</option>
+            <option value="AWS_ANTHROPIC">AWS/Anthropic (US)</option>
+            <option value="DEEPSEEK_CHINA">DeepSeek (China)</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-2">
+            Different cloud providers and regions have different environmental impacts.
+          </p>
+        </div>
+
+        <!-- Custom Carbon Intensity -->
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Custom Carbon Intensity (Optional)
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              type="number"
+              id="customCIF"
+              class="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-eco-green-500 focus:outline-none text-sm"
+              placeholder="e.g., 0.45"
+              step="0.001"
+              min="0"
+            />
+            <span class="text-sm text-gray-600">kgCO₂e/kWh</span>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">
+            Override with your local grid's carbon intensity factor.
+          </p>
+        </div>
+
+        <!-- Usage Statistics -->
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+          <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <span>📊</span> Your Usage Statistics
+          </h3>
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <div class="text-gray-600">Total Queries</div>
+              <div class="text-lg font-bold text-gray-800" id="statQueries">0</div>
+            </div>
+            <div>
+              <div class="text-gray-600">Total Tokens</div>
+              <div class="text-lg font-bold text-gray-800" id="statTokens">0</div>
+            </div>
+            <div>
+              <div class="text-gray-600">Energy Used</div>
+              <div class="text-lg font-bold text-gray-800" id="statEnergy">0 Wh</div>
+            </div>
+            <div>
+              <div class="text-gray-600">Saved</div>
+              <div class="text-lg font-bold text-eco-green-600" id="statSaved">0 Wh</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="bg-white rounded-lg shadow-md p-4 border border-gray-100 text-sm text-gray-600">
+          <h3 class="font-semibold text-gray-700 mb-2">About Eco-Smart</h3>
+          <p class="mb-2">
+            Based on peer-reviewed research: <em>"How Hungry is AI?"</em>
+          </p>
+          <p class="text-xs">
+            All calculations use validated formulas from published academic sources. Version 2.0
+          </p>
+        </div>
+      </div>
+
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-      <p>Ministry of Finance • Sustainable AI Initiative</p>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Help</a>
-        <a href="#">Feedback</a>
-      </div>
+    <footer class="bg-gray-100 px-5 py-3 border-t border-gray-200 text-center text-xs text-gray-600">
+      Ministry of Finance • Sustainable AI Initiative
     </footer>
   </div>
 
+  <!-- Scripts -->
+  <script src="core-engine.js"></script>
+  <script src="storage-manager.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
