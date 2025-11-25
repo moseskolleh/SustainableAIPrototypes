@@ -14,7 +14,10 @@
     "https://chat.openai.com/*",
     "https://claude.ai/*",
     "https://gemini.google.com/*",
-    "https://www.bing.com/*"
+    "https://www.bing.com/*",
+    "https://www.perplexity.ai/*",
+    "https://you.com/*",
+    "https://copilot.microsoft.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -30,9 +33,12 @@
         "https://chat.openai.com/*",
         "https://claude.ai/*",
         "https://gemini.google.com/*",
-        "https://www.bing.com/*"
+        "https://www.bing.com/*",
+        "https://www.perplexity.ai/*",
+        "https://you.com/*",
+        "https://copilot.microsoft.com/*"
       ],
-      "js": ["content.js"],
+      "js": ["core-engine.js", "content.js"],
       "css": ["content.css"]
     }
   ],

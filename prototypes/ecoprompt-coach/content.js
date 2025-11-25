@@ -8,21 +8,52 @@
   const PLATFORMS = {
     'chat.openai.com': {
       name: 'ChatGPT',
-      textareaSelector: '#prompt-textarea',
-      submitButtonSelector: 'button[data-testid="send-button"]',
-      co2PerQuery: 0.35
+      textareaSelectors: ['#prompt-textarea', 'textarea[data-id]', 'textarea'],
+      submitButtonSelectors: ['button[data-testid="send-button"]', 'button[data-testid="fruitjuice-send-button"]'],
+      co2PerQuery: 0.35,
+      usesContentEditable: false
     },
     'claude.ai': {
       name: 'Claude',
-      textareaSelector: 'div[contenteditable="true"]',
-      submitButtonSelector: 'button[aria-label="Send Message"]',
-      co2PerQuery: 0.30
+      textareaSelectors: ['div[contenteditable="true"]', 'div[role="textbox"]'],
+      submitButtonSelectors: ['button[aria-label="Send Message"]', 'button[type="submit"]'],
+      co2PerQuery: 0.30,
+      usesContentEditable: true
     },
     'gemini.google.com': {
       name: 'Gemini',
-      textareaSelector: 'rich-textarea',
-      submitButtonSelector: 'button[aria-label="Send message"]',
-      co2PerQuery: 0.32
+      textareaSelectors: ['rich-textarea', 'textarea', 'div[contenteditable="true"]'],
+      submitButtonSelectors: ['button[aria-label="Send message"]', 'button[aria-label*="Send"]'],
+      co2PerQuery: 0.32,
+      usesContentEditable: false
+    },
+    'www.bing.com': {
+      name: 'Bing Chat',
+      textareaSelectors: ['textarea[id*="search"]', 'textarea.b_searchbox'],
+      submitButtonSelectors: ['button[id*="submit"]', 'button[aria-label*="Send"]'],
+      co2PerQuery: 0.33,
+      usesContentEditable: false
+    },
+    'www.perplexity.ai': {
+      name: 'Perplexity',
+      textareaSelectors: ['textarea', 'div[contenteditable="true"]'],
+      submitButtonSelectors: ['button[type="submit"]', 'button[aria-label*="Submit"]'],
+      co2PerQuery: 0.31,
+      usesContentEditable: false
+    },
+    'you.com': {
+      name: 'You.com',
+      textareaSelectors: ['textarea', 'input[type="text"]'],
+      submitButtonSelectors: ['button[type="submit"]'],
+      co2PerQuery: 0.32,
+      usesContentEditable: false
+    },
+    'copilot.microsoft.com': {
+      name: 'Microsoft Copilot',
+      textareaSelectors: ['textarea', 'div[contenteditable="true"]'],
+      submitButtonSelectors: ['button[aria-label*="Send"]', 'button[type="submit"]'],
+      co2PerQuery: 0.33,
+      usesContentEditable: false
     }
   };
 
@@ -34,6 +65,42 @@
   }
 
   console.log(`EcoPrompt Coach: Initialized on ${currentPlatform.name}`);
+
+  // State management
+  let currentPromptText = '';
+  let currentTextarea = null;
+
+  // Get the prompt text from the textarea
+  function getPromptText() {
+    if (!currentTextarea) return '';
+
+    if (currentPlatform.usesContentEditable) {
+      return currentTextarea.textContent || currentTextarea.innerText || '';
+    } else {
+      return currentTextarea.value || '';
+    }
+  }
+
+  // Calculate dynamic CO2 based on actual prompt text
+  function calculateDynamicCO2(promptText) {
+    if (!promptText || promptText.trim().length === 0) {
+      return currentPlatform.co2PerQuery; // Default fallback
+    }
+
+    // Use the core engine to calculate actual CO2
+    if (typeof EcoSmartEngine !== 'undefined') {
+      const impact = EcoSmartEngine.calculateEnvironmentalImpact(promptText, {
+        outputType: 'general',
+        gridProfile: 'AZURE_OPENAI'
+      });
+      return impact.impact.carbon.grams;
+    }
+
+    // Fallback: simple token-based estimation
+    const tokens = Math.ceil(promptText.length / 4);
+    const co2PerToken = currentPlatform.co2PerQuery / 100; // Rough estimate
+    return Math.max(tokens * co2PerToken, currentPlatform.co2PerQuery);
+  }
 
   // Create impact indicator UI
   function createImpactIndicator() {
@@ -49,7 +116,7 @@
         <div class="ecoprompt-body">
           <div class="ecoprompt-stat">
             <span class="ecoprompt-label">This query:</span>
-            <span class="ecoprompt-value">~${currentPlatform.co2PerQuery}g CO₂</span>
+            <span class="ecoprompt-value" id="ecoprompt-current">~${currentPlatform.co2PerQuery}g CO₂</span>
           </div>
           <div class="ecoprompt-stat">
             <span class="ecoprompt-label">Today total:</span>
@@ -188,7 +255,7 @@
     document.head.appendChild(style);
   }
 
-  // Update indicator with current stats
+  // Update indicator with current stats and dynamic CO2
   async function updateIndicator(indicator) {
     try {
       const response = await chrome.runtime.sendMessage({
@@ -199,39 +266,96 @@
       if (todayElement && response) {
         todayElement.textContent = `${response.todayCO2 || 0}g CO₂`;
       }
+
+      // Update current query CO2 based on prompt text
+      const promptText = getPromptText();
+      if (promptText !== currentPromptText) {
+        currentPromptText = promptText;
+        updateCurrentCO2(indicator, promptText);
+      }
     } catch (error) {
       console.error('EcoPrompt Coach: Error updating stats', error);
     }
   }
 
-  // Track query submission
+  // Update the "This query" CO2 display
+  function updateCurrentCO2(indicator, promptText) {
+    const currentElement = indicator.querySelector('#ecoprompt-current');
+    if (currentElement) {
+      const co2Value = calculateDynamicCO2(promptText);
+      currentElement.textContent = `~${co2Value.toFixed(2)}g CO₂`;
+    }
+  }
+
+  // Track query submission with dynamic CO2
   function trackQuerySubmission() {
+    const promptText = getPromptText();
+    const estimatedCO2 = calculateDynamicCO2(promptText);
+
     chrome.runtime.sendMessage({
       action: 'trackQuery',
       details: {
         platform: currentPlatform.name,
-        estimatedCO2: currentPlatform.co2PerQuery,
+        estimatedCO2: estimatedCO2,
         timestamp: new Date().toISOString()
       }
     });
   }
 
+  // Find textarea using multiple selectors
+  function findTextarea() {
+    for (const selector of currentPlatform.textareaSelectors) {
+      const element = document.querySelector(selector);
+      if (element) {
+        return element;
+      }
+    }
+    return null;
+  }
+
+  // Find submit button using multiple selectors
+  function findSubmitButton() {
+    for (const selector of currentPlatform.submitButtonSelectors) {
+      const element = document.querySelector(selector);
+      if (element) {
+        return element;
+      }
+    }
+    return null;
+  }
+
   // Monitor for query submissions
   function monitorSubmissions() {
-    const submitButton = document.querySelector(currentPlatform.submitButtonSelector);
+    const submitButton = findSubmitButton();
 
     if (submitButton) {
       submitButton.addEventListener('click', trackQuerySubmission);
     }
 
     // Also monitor for Enter key in textarea
-    const textarea = document.querySelector(currentPlatform.textareaSelector);
-    if (textarea) {
-      textarea.addEventListener('keydown', (e) => {
+    currentTextarea = findTextarea();
+    if (currentTextarea) {
+      currentTextarea.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           trackQuerySubmission();
         }
       });
+
+      // Monitor text input for real-time CO2 updates
+      const inputHandler = () => {
+        const indicator = document.getElementById('ecoprompt-indicator');
+        if (indicator) {
+          const promptText = getPromptText();
+          updateCurrentCO2(indicator, promptText);
+        }
+      };
+
+      if (currentPlatform.usesContentEditable) {
+        currentTextarea.addEventListener('input', inputHandler);
+      } else {
+        currentTextarea.addEventListener('input', inputHandler);
+        currentTextarea.addEventListener('keyup', inputHandler);
+      }
     }
   }
 
