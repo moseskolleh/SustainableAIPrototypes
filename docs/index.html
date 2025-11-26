@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable AI Prototypes - Ministry View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #131824;
+            --bg-card: #1a1f2e;
+            --border-primary: #2dd4bf;
+            --text-primary: #ffffff;
+            --text-secondary: #8e9aaf;
+            --accent-cyan: #2dd4bf;
+            --glow: rgba(45, 212, 191, 0.3);
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 2px solid var(--border-primary);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .prototypes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .prototype-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .prototype-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--glow);
+        }
+
+        .prototype-card h2 {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .prototype-card .icon {
+            font-size: 2rem;
+        }
+
+        .prototype-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prototype-card .features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .prototype-card .features li {
+            color: var(--text-secondary);
+            padding: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .prototype-card .features li:before {
+            content: "▸ ";
+            color: var(--accent-cyan);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(45, 212, 191, 0.2);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌱 Sustainable AI Prototypes</h1>
+            <p class="subtitle">Ministry View - Interactive Dashboards & Gamification</p>
+        </header>
+
+        <div class="prototypes-grid">
+            <!-- Enhanced Tetris Dashboard -->
+            <div class="prototype-card">
+                <h2>
+                    <span class="icon">🎮</span>
+                    Tetris Dashboard
+                    <span class="badge">NEW</span>
+                </h2>
+                <p>Dynamic Tetris game transformed into a real-time AI usage intensity dashboard with meaningful block colors and live sustainability metrics.</p>
+                <ul class="features">
+                    <li>Real-time AI Usage Intensity graph updates</li>
+                    <li>Color-coded blocks with sustainability meaning</li>
+                    <li>Dynamic CO₂ savings bar chart</li>
+                    <li>Team leaderboard with rankings</li>
+                    <li>Personalized recommendations</li>
+                    <li>Black-frame ministry aesthetic</li>
+                </ul>
+                <a href="tetris-enhanced/" class="btn">
+                    <span class="status-indicator"></span>
+                    Launch Dashboard
+                </a>
+            </div>
+
+            <!-- Physical Implementations -->
+            <div class="prototype-card">
+                <h2>
+                    <span class="icon">🔨</span>
+                    Physical Implementations
+                </h2>
+                <p>Hardware prototypes and building guides for creating physical sustainability visualizations and interactive displays.</p>
+                <ul class="features">
+                    <li>Step-by-step building guides</li>
+                    <li>Component lists and sourcing</li>
+                    <li>Wiring diagrams and schematics</li>
+                    <li>Software integration examples</li>
+                </ul>
+                <a href="physical-implementations/" class="btn">View Guides</a>
+            </div>
+
+            <!-- Coming Soon Placeholder -->
+            <div class="prototype-card" style="opacity: 0.6; border-style: dashed;">
+                <h2>
+                    <span class="icon">🚀</span>
+                    More Prototypes
+                    <span class="badge" style="background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; color: #fbbf24;">COMING SOON</span>
+                </h2>
+                <p>Additional sustainability visualization prototypes and gamification concepts are in development.</p>
+                <ul class="features">
+                    <li>Carbon footprint calculators</li>
+                    <li>Team collaboration dashboards</li>
+                    <li>Energy usage visualizations</li>
+                    <li>Sustainability challenges</li>
+                </ul>
+                <a href="#" class="btn" style="pointer-events: none; opacity: 0.5;">Coming Soon</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                <strong>Sustainable AI Prototypes</strong> - Ministry View<br>
+                Interactive prototypes for visualizing and gamifying AI sustainability metrics
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem;">
+                <a href="https://github.com/moseskolleh/SustainableAIPrototypes" style="color: var(--accent-cyan); text-decoration: none;">
+                    View on GitHub →
+                </a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
