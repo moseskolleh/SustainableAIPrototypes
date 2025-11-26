@@ -130,19 +130,54 @@ class TetrisGrid {
 }
 ```
 
-## Installation
+## 🎮 How to Play
 
 ### Quick Start
 ```bash
 # Navigate to prototype
 cd prototypes/black-frame-tetris
 
-# Start server
+# Option 1: Use the included server
+python3 server.py
+
+# Option 2: Use Python's built-in server
 python3 -m http.server 8080
 
 # Open browser
 open http://localhost:8080
 ```
+
+### Game Controls
+- **SPACE**: Start game / Hard drop (instantly drop piece to bottom)
+- **← →**: Move piece left/right
+- **↑**: Rotate piece clockwise
+- **↓**: Soft drop (move piece down faster)
+- **P**: Pause/Resume game
+
+### Gameplay
+1. **Start**: Press SPACE to begin
+2. **Play**: Control falling Tetris pieces (I, O, T, S, Z, J, L shapes)
+3. **Clear Lines**: Complete horizontal rows to score points
+4. **Use Power-Ups**: Click sustainable action buttons for bonus line clears
+5. **Level Up**: Every 10 lines increases your level and speed
+6. **Survive**: Don't let blocks reach the top!
+
+### Scoring
+- **Single Line**: 100 points × level
+- **Double Lines**: 300 points × level
+- **Triple Lines**: 500 points × level
+- **Tetris (4 lines)**: 800 points × level
+- **Hard Drop**: 2 points per row dropped
+- **Power-Up Bonuses**: 200-1500 points depending on action
+
+### Sustainable Power-Ups (Use During Game)
+| Power-Up | Score Bonus | Lines Cleared | CO₂ Saved |
+|----------|-------------|---------------|-----------|
+| Optimize Prompts | +200 pts | 2 lines | -0.5kg |
+| Library Prompts | +200 pts | 2 lines | -0.4kg |
+| Complete Quiz | +500 pts | 3 lines | -1.0kg |
+| Eco Alternative | +800 pts | 4 lines | -1.5kg |
+| Efficiency Goal | +1500 pts | 5 lines | -3.0kg |
 
 ### Deployment Options
 
