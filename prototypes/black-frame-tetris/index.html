@@ -72,36 +72,41 @@
                         Live Statistics
                     </h3>
 
-                    <div class="stat-row">
-                        <span class="stat-label">Requests Today</span>
-                        <span class="stat-value" id="requests-today">247</span>
+                    <div class="stat-row highlight" style="background: rgba(16, 185, 129, 0.1); margin-bottom: 1rem;">
+                        <span class="stat-label">Game Status</span>
+                        <span class="stat-value" id="game-status" style="font-size: 0.9rem;">⏹️ Press SPACE to Start</span>
                     </div>
 
                     <div class="stat-row">
-                        <span class="stat-label">Blocks Added</span>
-                        <span class="stat-value added" id="blocks-added">+18</span>
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="efficiency-score" style="color: #10b981; font-size: 1.75rem;">0</span>
+                    </div>
+
+                    <div class="stat-row">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="level-value">1</span>
                     </div>
 
                     <div class="stat-row">
                         <span class="stat-label">Lines Cleared</span>
-                        <span class="stat-value cleared" id="lines-cleared">3</span>
+                        <span class="stat-value cleared" id="lines-cleared">0</span>
                     </div>
 
                     <div class="stat-row">
-                        <span class="stat-label">Usage Intensity</span>
-                        <span class="stat-value intensity" id="usage-intensity">Moderate</span>
+                        <span class="stat-label">Total Pieces</span>
+                        <span class="stat-value added" id="blocks-added">0</span>
+                    </div>
+
+                    <div class="stat-row">
+                        <span class="stat-label">Requests Today</span>
+                        <span class="stat-value" id="requests-today">0</span>
                     </div>
 
                     <div class="stat-separator"></div>
 
                     <div class="stat-row highlight">
                         <span class="stat-label">CO₂ Impact</span>
-                        <span class="stat-value co2" id="co2-impact">3.8 kg</span>
-                    </div>
-
-                    <div class="stat-row highlight">
-                        <span class="stat-label">Efficiency Score</span>
-                        <span class="stat-value efficiency" id="efficiency-score">1.4</span>
+                        <span class="stat-value co2" id="co2-impact">0.00 kg</span>
                     </div>
                 </div>
 
@@ -109,16 +114,16 @@
                 <div class="actions-card">
                     <h3>
                         <span class="icon">🎯</span>
-                        Clear Lines (Reduce Impact)
+                        Sustainable Power-Ups
                     </h3>
-                    <p class="actions-subtitle">Complete these sustainable actions to clear blocks!</p>
+                    <p class="actions-subtitle">Use these eco-friendly actions to clear blocks and boost your score!</p>
 
                     <div class="action-list">
                         <button class="action-button" onclick="performAction('optimize')">
                             <div class="action-icon">✨</div>
                             <div class="action-content">
-                                <div class="action-title">Optimize 5 Prompts</div>
-                                <div class="action-reward">Clears 1 line (-5 blocks)</div>
+                                <div class="action-title">Optimize Prompts</div>
+                                <div class="action-reward">+200 pts | 2 lines | -0.5kg CO₂</div>
                             </div>
                             <div class="action-arrow">→</div>
                         </button>
@@ -126,8 +131,8 @@
                         <button class="action-button" onclick="performAction('library')">
                             <div class="action-icon">📚</div>
                             <div class="action-content">
-                                <div class="action-title">Use Library Prompts</div>
-                                <div class="action-reward">Clears 1 line (-5 blocks)</div>
+                                <div class="action-title">Library Prompts</div>
+                                <div class="action-reward">+200 pts | 2 lines | -0.4kg CO₂</div>
                             </div>
                             <div class="action-arrow">→</div>
                         </button>
@@ -136,7 +141,7 @@
                             <div class="action-icon">🎓</div>
                             <div class="action-content">
                                 <div class="action-title">Complete Quiz</div>
-                                <div class="action-reward">Clears 2 lines (-10 blocks)</div>
+                                <div class="action-reward">+500 pts | 3 lines | -1.0kg CO₂</div>
                             </div>
                             <div class="action-arrow">→</div>
                         </button>
@@ -144,8 +149,8 @@
                         <button class="action-button" onclick="performAction('alternative')">
                             <div class="action-icon">🌱</div>
                             <div class="action-content">
-                                <div class="action-title">Use Eco Alternative</div>
-                                <div class="action-reward">Clears 3 lines (-15 blocks)</div>
+                                <div class="action-title">Eco Alternative</div>
+                                <div class="action-reward">+800 pts | 4 lines | -1.5kg CO₂</div>
                             </div>
                             <div class="action-arrow">→</div>
                         </button>
@@ -153,51 +158,46 @@
                         <button class="action-button special" onclick="performAction('efficiency')">
                             <div class="action-icon">🏆</div>
                             <div class="action-content">
-                                <div class="action-title">Achieve <1.5 Efficiency</div>
-                                <div class="action-reward">Clears 5 lines (-25 blocks)</div>
+                                <div class="action-title">Efficiency Goal</div>
+                                <div class="action-reward">+1500 pts | 5 lines | -3.0kg CO₂</div>
                             </div>
                             <div class="action-arrow">→</div>
                         </button>
                     </div>
                 </div>
 
-                <!-- Intensity Legend -->
+                <!-- Controls -->
                 <div class="legend-card">
                     <h3>
-                        <span class="icon">📖</span>
-                        How It Works
+                        <span class="icon">🎮</span>
+                        Game Controls
                     </h3>
 
-                    <div class="legend-item">
-                        <div class="legend-block low"></div>
-                        <div class="legend-text">
-                            <strong>Low Usage</strong> - 0-50 requests/day
+                    <div class="legend-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                        <div class="legend-text" style="display: flex; justify-content: space-between; width: 100%;">
+                            <strong>← →</strong>
+                            <span>Move piece left/right</span>
                         </div>
-                    </div>
-
-                    <div class="legend-item">
-                        <div class="legend-block moderate"></div>
-                        <div class="legend-text">
-                            <strong>Moderate Usage</strong> - 51-150 requests/day
+                        <div class="legend-text" style="display: flex; justify-content: space-between; width: 100%;">
+                            <strong>↑</strong>
+                            <span>Rotate piece</span>
                         </div>
-                    </div>
-
-                    <div class="legend-item">
-                        <div class="legend-block high"></div>
-                        <div class="legend-text">
-                            <strong>High Usage</strong> - 151-300 requests/day
+                        <div class="legend-text" style="display: flex; justify-content: space-between; width: 100%;">
+                            <strong>↓</strong>
+                            <span>Soft drop</span>
                         </div>
-                    </div>
-
-                    <div class="legend-item">
-                        <div class="legend-block critical"></div>
-                        <div class="legend-text">
-                            <strong>Critical</strong> - 300+ requests/day
+                        <div class="legend-text" style="display: flex; justify-content: space-between; width: 100%;">
+                            <strong>SPACE</strong>
+                            <span>Hard drop / Start</span>
+                        </div>
+                        <div class="legend-text" style="display: flex; justify-content: space-between; width: 100%;">
+                            <strong>P</strong>
+                            <span>Pause/Resume</span>
                         </div>
                     </div>
 
                     <div class="legend-note">
-                        <strong>Goal:</strong> Keep usage below danger zone or clear lines with sustainable actions!
+                        <strong>🎯 Goal:</strong> Clear lines and use sustainable power-ups to maximize your score while reducing CO₂ impact!
                     </div>
                 </div>
 
